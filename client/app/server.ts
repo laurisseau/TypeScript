@@ -1,11 +1,20 @@
 import express from 'express';
+import { WebSocketServer } from 'ws';
 
-const app = express();
+let port: number;
 
-app.get('/', (req, res) => {
-  res.send('hello world');
-});
+port = 5000;
+const wss = new WebSocketServer({ port });
 
-app.listen(3000, () => {
-  console.log('Application listening on http://localhost:3000');
-});
+wss.on('connection', (ws) => {
+
+  ws.on('message', (data) => {
+    console.log(`Received message from client: ${data}`)
+  })
+
+  ws.send('Hello this is the server.')
+})
+
+console.log(`Listening on port ${port}`)
+
+

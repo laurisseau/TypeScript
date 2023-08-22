@@ -5,7 +5,7 @@ export default function Home() {
   port = 5000;
 
   let ws = new WebSocket(`ws://localhost:${port}`);
-
+////////
   ws.on('open', () => {
     ws.send('Hello this is the client default')
   });

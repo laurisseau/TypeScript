@@ -1,6 +1,7 @@
 'use client';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import '../styles/chats.css';
+import { Context } from '../Provider';
 
 interface ChatMessageEvent extends MessageEvent {
   data: {
@@ -10,10 +11,10 @@ interface ChatMessageEvent extends MessageEvent {
 
 export default function Chat() {
   const [message, setMessage] = useState<string>(''); // State to hold the message
-
   let port: number = 5000;
-
   let ws = new WebSocket(`ws://localhost:${port}`);
+  const { state } = useContext(Context);
+  console.log(state);
 
   ws.onmessage = async (event: ChatMessageEvent) => {
     const receivedText = await event.data.text(); // Convert Blob to text
@@ -36,7 +37,9 @@ export default function Chat() {
         type="text"
         placeholder="Type your message"
         value={message} // Binding the input value to the message state
-        onChange={(e) => setMessage(e.target.value)} // Update the message state on input change
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setMessage(e.target.value)
+        } // Update the message state on input change
       />
 
       <button onClick={sendMessage}>Send</button>

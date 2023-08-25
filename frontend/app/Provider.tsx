@@ -9,13 +9,10 @@ type UserInfo = {
   username: string;
   accessToken: string;
   email: string;
-  preferred_username: string;
   sub: string;
   token: string;
   ['cognito:username']: string;
-  ['custom:link']: string;
   ['custom:role']: string;
-  ['custom:website']: string;
 };
 
 type StateType = {

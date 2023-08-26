@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { useContext, useState } from 'react';
 import '@/styles/chats.css';
 import { Context } from '../Provider';
+import Button from 'react-bootstrap/Button';
 
 interface ChatMessageEvent extends MessageEvent {
   data: {
@@ -44,15 +45,30 @@ export default function Chat() {
     }
   };
 
-  ws.onmessage = (event) => {
-    const newObj = JSON.parse(event.data);
-    console.log(newObj.message);
-    if (newObj.message) {
-      messages.push({ clientId: userInfo?.sub || '', message: newObj.message });
-    }
-  };
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      const newObj = JSON.parse(event.data) as {
+        clientId: string;
+        message: string;
+      };
 
-  console.log(messages);
+      if (newObj.message) {
+        if (userInfo?.sub) {
+          setMessages((prevMessages) => [
+            ...prevMessages,
+            { clientId: newObj.clientId, message: newObj.message },
+          ]);
+        }
+      }
+    };
+
+    ws.onmessage = handleMessage;
+
+    // Clean up the event handler when the component unmounts
+    return () => {
+      ws.onmessage = null;
+    };
+  }, [ws, userInfo]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewMessage({ clientId: userInfo?.sub || '', message: e.target.value });
@@ -65,19 +81,28 @@ export default function Chat() {
           <div className="message-ui border">
             <div className="message-list">
               {messages.map((message, index) => (
-                <div key={index} className={`message user`}>
+                <div
+                  key={index}
+                  className={`message ${
+                    message.clientId == userInfo?.sub ? 'user' : 'other'
+                  }`}
+                >
                   {message.message}
                 </div>
               ))}
             </div>
             <form className="message-input" onSubmit={sendMessage}>
-              <input
-                type="text"
-                placeholder="Type a message..."
-                value={newMessage.message}
-                onChange={handleInputChange}
-              />
-              <button type="submit">Send</button>
+              <div className="input-container">
+                <input
+                  type="text"
+                  placeholder="Type a message..."
+                  value={newMessage.message}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <Button className="w-100" type="submit">
+                Send
+              </Button>
             </form>
           </div>
         </>

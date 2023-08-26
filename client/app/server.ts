@@ -1,7 +1,8 @@
-import WebSocket, { WebSocketServer } from 'ws';
 import express from 'express';
 import userRouter from './routes/user';
 import cors from 'cors';
+
+import WebSocket, { WebSocketServer } from 'ws';
 
 let port: number;
 port = 5000;
@@ -11,15 +12,14 @@ const clientsConnected: Set<string> = new Set();
 // server for chat
 const wss = new WebSocketServer({ port });
 
-wss.on('connection', (ws) => {
-  ws.on('message', (message) => {
-    const messageText = message.toString('utf8');
-    console.log(messageText);
+wss.on('connection', (ws: WebSocket) => {
+  ws.on('message', (message: WebSocket.Data) => {
+    const messageText: string = message.toString('utf8');
 
-    const parsedMessage = JSON.parse(messageText);
+    const parsedMessage: any = JSON.parse(messageText);
+
     if (parsedMessage.clientId) {
       clientsConnected.add(parsedMessage.clientId);
-      console.log(clientsConnected);
 
       wss.clients.forEach((client) => {
         if (client.readyState === WebSocket.OPEN) {

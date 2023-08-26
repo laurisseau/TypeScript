@@ -64,7 +64,7 @@ export default function login() {
             />
           </Form.Group>
 
-          <Button type="submit" variant="primary" className="mb-4 w-100">
+          <Button type="submit"  className="mb-4 w-100">
             Sign in
           </Button>
 

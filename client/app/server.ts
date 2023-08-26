@@ -1,19 +1,32 @@
-import { WebSocketServer } from 'ws';
+import WebSocket, { WebSocketServer } from 'ws';
 import express from 'express';
 import userRouter from './routes/user';
-import config from './config/default';
 import cors from 'cors';
 
 let port: number;
 port = 5000;
 
+const clientsConnected: Set<string> = new Set();
+
 // server for chat
 const wss = new WebSocketServer({ port });
 
 wss.on('connection', (ws) => {
-  ws.on('message', (data) => {
-    console.log(`Received message from client: ${data}`);
-    ws.send(data);
+  ws.on('message', (message) => {
+    const messageText = message.toString('utf8');
+    console.log(messageText);
+
+    const parsedMessage = JSON.parse(messageText);
+    if (parsedMessage.clientId) {
+      clientsConnected.add(parsedMessage.clientId);
+      console.log(clientsConnected);
+
+      wss.clients.forEach((client) => {
+        if (client.readyState === WebSocket.OPEN) {
+          client.send(JSON.stringify(parsedMessage));
+        }
+      });
+    }
   });
 });
 

@@ -1,8 +1,8 @@
 import { WebSocketServer } from 'ws';
 import express from 'express';
-import dotenv from 'dotenv';
 import userRouter from './routes/user';
 import config from './config/default';
+import cors from 'cors';
 
 let port: number;
 port = 5000;
@@ -22,9 +22,16 @@ console.log(`chat Listening on port ${port}`);
 // server for api
 
 let apiPort: number;
-apiPort = 6000;
+apiPort = 4000;
 
 const app = express();
+
+app.use(
+  cors({
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST'], // You can adjust the allowed methods
+  })
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

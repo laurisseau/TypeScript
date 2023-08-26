@@ -32,7 +32,7 @@ const cognito = new CognitoIdentityServiceProvider({ region: 'us-east-1' });
 export const signup = expressAsyncHandler(
   async (req: Request, res: Response) => {
     const emailToken = generateTokenForEmail({ email: req.body.email });
-
+    const origin = req.get('Origin');
     const attributeList: CognitoUserAttribute[] = [];
 
     interface dataEmailType {
@@ -72,9 +72,7 @@ export const signup = expressAsyncHandler(
 
     const dataLink: dataLinkType = {
       Name: 'custom:link',
-      Value: `${req.protocol}://${req.get(
-        'x-forwarded-host'
-      )}/signup/otp/${emailToken}`,
+      Value: `${origin}/otp/${emailToken}`,
     };
 
     interface dataRoleType {
@@ -116,9 +114,7 @@ export const signup = expressAsyncHandler(
 
           res.send({
             email: user,
-            url: `${req.protocol}://${req.get(
-              'x-forwarded-host'
-            )}/otp/${emailToken}`,
+            url: `${origin}/otp/${emailToken}`,
             token: emailToken,
           });
         }
@@ -156,8 +152,6 @@ export const emailVerification = expressAsyncHandler(
 
 export const login = expressAsyncHandler(
   async (req: Request, res: Response) => {
-    // Import the correct type
-
     const params: InitiateAuthRequest = {
       AuthFlow: 'USER_PASSWORD_AUTH',
       ClientId: clientId, // Make sure clientId is defined
@@ -190,6 +184,7 @@ export const login = expressAsyncHandler(
             email: string;
             token: string;
             accessToken: string;
+            success: string;
           }
 
           const responsePayload: responsePayloadDataType = {
@@ -199,13 +194,14 @@ export const login = expressAsyncHandler(
             email: payload.email as string,
             token: idToken,
             accessToken: accessToken as string,
+            success: 'success',
           };
 
           res.send(responsePayload);
         }
       }
     } catch (err) {
-      res.send('Wrong username or password.');
+      res.status(500).send('Wrong username or password.');
     }
   }
 );

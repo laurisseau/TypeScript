@@ -17,3 +17,64 @@
 }
 
 
+.container-size{
+  width: 50%;
+  height: fit-content;
+}
+
+.container-height{
+  height: 100vh;
+}
+
+/*770px width 75%*/
+
+.otp-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.reset-otp-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.otp-input {
+  width: 2.5rem;
+  height: 2.5rem;
+  margin: 0 0.5rem;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+  outline: none;
+}
+
+.otp-submit {
+  display: block;
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #fff;
+  background-color: #1da1f2;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  outline: none;
+}
+
+.otp-submit:hover {
+  background-color: #0c85d0;
+}
+
+.otp-submit:active {
+  background-color: #0b6b99;
+}
+
+.otp-reset-input {
+  width: 340px;
+}

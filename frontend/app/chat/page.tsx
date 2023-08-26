@@ -1,4 +1,5 @@
 'use client';
+import { useEffect } from 'react';
 import { useContext, useState } from 'react';
 import '../styles/chats.css';
 import { Context } from '../Provider';
@@ -14,7 +15,7 @@ export default function Chat() {
   let port: number = 5000;
   let ws = new WebSocket(`ws://localhost:${port}`);
   const { state } = useContext(Context);
-  console.log(state);
+  const { userInfo } = state;
 
   ws.onmessage = async (event: ChatMessageEvent) => {
     const receivedText = await event.data.text(); // Convert Blob to text
@@ -31,18 +32,22 @@ export default function Chat() {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-between p-24 border">
-      <h1>Chat</h1>
+      {userInfo ? (
+        <>
+          <h1>Chat</h1>
 
-      <input
-        type="text"
-        placeholder="Type your message"
-        value={message} // Binding the input value to the message state
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setMessage(e.target.value)
-        } // Update the message state on input change
-      />
+          <input
+            type="text"
+            placeholder="Type your message"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+          />
 
-      <button onClick={sendMessage}>Send</button>
+          <button onClick={sendMessage}>Send</button>
+        </>
+      ) : (
+        <div>Please Login</div>
+      )}
     </div>
   );
 }

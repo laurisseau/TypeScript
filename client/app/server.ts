@@ -51,6 +51,14 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/users', userRouter);
 
+const __dirname = path.resolve()
+
+app.use(express.static(path.join(__dirname, '/frontend/build')))
+
+app.get('*', (req: Request, res: Response) => {
+  res.sendFile(path.join(__dirname, '/frontend/build/index.html'))
+})
+
 app.listen(apiPort, () => {
   console.log(`api listening on port ${apiPort}`);
 });

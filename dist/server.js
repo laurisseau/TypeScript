@@ -36,6 +36,10 @@ app.use((0, cors_1)({
 app.use(express_1.json());
 app.use(express_1.urlencoded({ extended: true }));
 app.use('/api/users', user_1.default);
+app.use(express_1.static(path_1.join(__dirname, '/frontend/build')));
+app.get('*', (req, res) => {
+    res.sendFile(path_1.join(__dirname, '/frontend/build/index.html'));
+});
 app.listen(apiPort, () => {
     console.log(`api listening on port ${apiPort}`);
 });

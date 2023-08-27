@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "cd client && npm install && cd ../frontend && npm install && npm run build",
-    "start": "node dist/server.js"
+    "start": "node dist/server.js",
+    "build": "cd frontend && npm run build"
   },
   "author": "",
   "license": "ISC",

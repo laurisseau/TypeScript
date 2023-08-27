@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node dist/server.js",
-    "build": "cd frontend && npm install && npm run build",
-    "start:both": "concurrently \"npm start\" \"npm run build\""
+    "build": "cd frontend && npm install && npm run build"
   },
   "author": "",
   "license": "ISC",

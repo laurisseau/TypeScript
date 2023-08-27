@@ -30,7 +30,7 @@ let apiPort;
 apiPort = 4000;
 const app = (0, express_1)();
 app.use((0, cors_1)({
-    origin: 'http://localhost:3000',
+    origin: 'https://typescript-messenger-80b8feb4ad1c.herokuapp.com/',
     methods: ['GET', 'POST'], // You can adjust the allowed methods
 }));
 app.use(express_1.json());

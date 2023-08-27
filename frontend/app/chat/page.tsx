@@ -18,7 +18,7 @@ export default function Chat() {
 
   let port: number = 5000;
   //let ws = new WebSocket(`ws://localhost:${port}`);
-  let ws = new WebSocket(`ws://localhost:${port}`);
+  let ws = new WebSocket('ws://typescript-messenger-80b8feb4ad1c.herokuapp.com/');
   const { state } = useContext(Context);
   const { userInfo } = state;
   interface serverObj {

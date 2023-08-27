@@ -41,7 +41,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: 'http://localhost:3000',
+    origin: 'https://typescript-messenger-80b8feb4ad1c.herokuapp.com/',
     methods: ['GET', 'POST'], // You can adjust the allowed methods
   })
 );

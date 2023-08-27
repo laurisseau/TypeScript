@@ -17,6 +17,7 @@ export default function Chat() {
   >([]);
 
   let port: number = 5000;
+  //let ws = new WebSocket(`ws://localhost:${port}`);
   let ws = new WebSocket(`ws://localhost:${port}`);
   const { state } = useContext(Context);
   const { userInfo } = state;

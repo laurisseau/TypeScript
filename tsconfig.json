@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+      "target": "ES6",
+      "module": "CommonJS",
+      "outDir": "./dist", // or any other directory you prefer
+      "rootDir": "./client/app" // or the path to your TypeScript files
+    }
+  }
+  

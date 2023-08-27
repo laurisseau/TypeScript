@@ -1,7 +1,7 @@
-import express from 'express';
+import express,{ Request, Response } from 'express';
 import userRouter from './routes/user';
 import cors from 'cors';
-
+import path from 'path';
 import WebSocket, { WebSocketServer } from 'ws';
 
 let port: number;
@@ -50,6 +50,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/users', userRouter);
+
+const __dirname = path.resolve()
+
+app.use(express.static(path.join(__dirname, '/frontend/build')))
+
+app.get('*', (req: Request, res: Response) => {
+  res.sendFile(path.join(__dirname, '/frontend/build/index.html'))
+})
 
 app.listen(apiPort, () => {
   console.log(`api listening on port ${apiPort}`);
